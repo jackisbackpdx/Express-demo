@@ -31,7 +31,7 @@ app.post('/api/courses', (req, res) => {
         name: req.body.name
     };
     courses.push(course);
-    res.send(course);
+    res.send(courses);
 });
 
 app.get('/api/courses/:id', (req, res) => {
@@ -55,13 +55,12 @@ app.put('/api/courses/:id', (req, res) => {
     // update course
     course.name = req.body.name;
     // return the updated course
-    res.send(course);
+    res.send(courses);
 });
 
 function validateCourse(course) {
     const schema = Joi.object({ name: Joi.string().min(3).required() });
     return schema.validate(course);
-    
 }
 
 app.delete('/api/courses/:id', (req, res) => {
