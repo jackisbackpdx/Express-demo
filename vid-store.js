@@ -42,7 +42,16 @@ app.put('/api/movies/:id', (req, res) => {
 });
 
 app.delete('/api/movies/:id', (req, res) => {
+    const { error } = validateGenres(req.body);
+    if(error) return res.status(400).send(error.details[0].messages);
 
+    const movie = movies.find(c => c.id === req.params.id);
+    if(!movie) return res.status(404).send('The page with the id you are looking for could not be found');
+
+    const index = movies.indexOf(movie);
+    movies.slice(index, 1);
+    
+    res.send(movies);
 });
 
 function validateGenres(item) {
