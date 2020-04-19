@@ -1,5 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const Joi = require('@hapi/joi');
 
 const app = express();
@@ -55,4 +54,5 @@ function validateGenres(item) {
     const schema = Joi.object({ genre: Joi.string().min(3).required() }); 
     return schema.validate(item);
 }
+
 app.listen(2000, () => console.log('listening on port 2000'));

@@ -25,7 +25,6 @@ app.post('/api/courses', (req, res) => {
     const { error } = validateCourse(req.body);
     if(error) return req.status(400).send(error.details[0].message);
     
-    
     const course = {
         id: courses.length + 1,
         name: req.body.name
