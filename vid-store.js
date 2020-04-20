@@ -1,5 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const Joi = require('@hapi/joi');
 
 const app = express();
@@ -42,11 +41,18 @@ app.put('/api/movies/:id', (req, res) => {
 });
 
 app.delete('/api/movies/:id', (req, res) => {
+    const movie = movies.find(c => c.id === parseInt(req.params.id));
+    if(!movie) return res.status(404).send('The page with the id you are looking for could not be found');
 
+    const index = movies.indexOf(movie);
+    movies.splice(index, 1);
+    
+    res.send(movies);
 });
 
 function validateGenres(item) {
     const schema = Joi.object({ genre: Joi.string().min(3).required() }); 
     return schema.validate(item);
 }
+
 app.listen(2000, () => console.log('listening on port 2000'));
