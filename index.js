@@ -1,17 +1,41 @@
+const config = require('config');
+const morgan = require('morgan');
+const helmet = require('helmet');
 const Joi = require('@hapi/joi');
 const express = require('express');
 const dotenv = require('dotenv');
-
+const logger = require('./custom-middleware/logger');
+const authenticate = require('./custom-middleware/authenticate');
 const app = express();
+
+const envStatus = app.get('env');
+console.log(envStatus);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(helmet());
+
+const applicationName = `Application Name: ${config.get('name')}`;
+const mailServer = `Mail Server: ${config.get('mail.host')}`;
+console.log(applicationName);
+console.log(mailServer);
+
+if(envStatus === 'development') {
+    app.use(morgan('tiny'));
+    console.log('Morgan Enabled');
+}
+
 dotenv.config();
 
 const courses = [
     { id: 1, name: 'course1' },
     { id: 2, name: 'course2' },
     { id: 3, name: 'course3' },
-    { id: 4, name: 'course4' },
 ];
+
+app.use(logger);
+app.use(authenticate);
 
 app.get('/', (req, res) => {
     res.send('Home Page');
