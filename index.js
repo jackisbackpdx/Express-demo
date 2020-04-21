@@ -18,8 +18,10 @@ app.use(helmet());
 
 const applicationName = `Application Name: ${config.get('name')}`;
 const mailServer = `Mail Server: ${config.get('mail.host')}`;
+const mailPassword = `Mail Password: ${config.get('mail.password')}`;
 console.log(applicationName);
 console.log(mailServer);
+console.log(mailPassword);
 
 if(envStatus === 'development') {
     app.use(morgan('tiny'));
